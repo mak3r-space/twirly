@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>twirly</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<aside id="panel">
+  <header>
+    <h1>twirly</h1>
+    <p class="tagline">a twisted vase generator</p>
+  </header>
+  <form id="controls"></form>
+  <div class="actions">
+    <button id="download" type="button" disabled>Download STL</button>
+  </div>
+  <p id="status">loading OpenSCAD&hellip;</p>
+  <footer>
+    <p>
+      Rendered in your browser by
+      <a href="https://github.com/openscad/openscad-wasm">openscad-wasm</a>.
+      Source at
+      <a href="https://github.com/juliaogris/twirly">juliaogris/twirly</a>.
+    </p>
+  </footer>
+</aside>
+<main id="viewport">
+  <canvas id="canvas"></canvas>
+</main>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
