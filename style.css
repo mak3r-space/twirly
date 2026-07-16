@@ -51,6 +51,7 @@ body {
 }
 
 #presets a {
+    -webkit-tap-highlight-color: transparent;
     padding: 4px 10px;
     border: 1px solid var(--border);
     border-radius: 999px;
@@ -59,8 +60,12 @@ body {
     text-decoration: none;
 }
 
-#presets a:hover {
-    border-color: var(--accent);
+/* Hover only on devices that really hover; on touch the style would
+   stick to the last-tapped chip. */
+@media (hover: hover) {
+    #presets a:hover {
+        border-color: var(--accent);
+    }
 }
 
 #presets a.active {
