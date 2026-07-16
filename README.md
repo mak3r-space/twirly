@@ -5,7 +5,9 @@ the shape parameters, [openscad-wasm](https://github.com/openscad/openscad-wasm)
 renders the model in a web worker, and [three.js](https://threejs.org/)
 displays the result. The generated STL can be downloaded for 3D printing.
 
-Live site: https://twirly.juliaogris.com/
+Live site: https://twirly.juliaogris.com/, mirrored to
+https://twirly.juli.au/ and https://twirly.mak3r.space/ by the
+[mirror workflow](.github/workflows/mirror.yml) on every push.
 
 The shape parameters live in the URL query string, so a configured shape
 can be shared by copying the address.
