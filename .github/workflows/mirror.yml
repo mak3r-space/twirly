@@ -1,0 +1,28 @@
+# Mirror the site to juli-au/twirly, which serves the same content at
+# https://twirly.juli.au/. GitHub Pages supports one custom domain per
+# repository, so the second domain needs a second repository; this
+# workflow keeps it in sync so the two domains can never drift apart.
+# The only difference between the repositories is the CNAME file.
+name: mirror
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Push to juli-au/twirly with swapped CNAME
+        run: |
+          echo "twirly.juli.au" > CNAME
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git commit -am "Mirror juliaogris/twirly@${GITHUB_SHA::7}"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.MIRROR_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          git push --force git@github.com:juli-au/twirly.git HEAD:main
