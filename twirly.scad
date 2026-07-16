@@ -42,9 +42,9 @@ twist_part = 1.5; // [0:0.25:3]
 // How the top closes: 2 gives a full dome, 4 - 6 keep the body shape and
 // round off only the tip.
 roundness = 4; // [0.5:0.5:8]
-// Tip sharpness: 1 = rounded, equal to roundness = straight cone tip,
-// higher = sharp spike.
-pointiness = 1; // [1:0.5:10]
+// Tip sharpness: 0 leaves the top open like the original bowl or vase,
+// 1 = rounded, equal to roundness = straight cone tip, higher = spike.
+pointiness = 1; // [0:0.5:10]
 // Radius of the very tip as a fraction of the base radius. Keep it above
 // zero so the top ring of vertices does not collapse into a single point.
 tip_fraction = 0.02; // [0.005:0.005:0.2]
