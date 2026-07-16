@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Top view of the twisted tower: nested triangles, each smaller and
+       rotated a little further, in the site's gold on its panel colour. -->
+  <rect width="64" height="64" rx="14" fill="#1d1f26"/>
+  <g fill="none" stroke="#e8b04b" stroke-linejoin="round">
+    <path stroke-width="3.5" stroke-opacity="0.55"
+          d="M 32 8 L 11.2 44 L 52.8 44 Z"/>
+    <path stroke-width="3.5" stroke-opacity="0.8"
+          d="M 25.2 17.5 L 22.8 45.1 L 47.9 33.4 Z"/>
+    <path stroke-width="3" fill="#e8b04b"
+          d="M 25.1 26.2 L 30.4 40.9 L 40.5 28.9 Z"/>
+  </g>
+</svg>

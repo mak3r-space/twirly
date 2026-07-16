@@ -8,6 +8,48 @@ const downloadEl = document.getElementById("download");
 const values = defaults();
 
 // ---------------------------------------------------------------------
+// Shareable URLs. Parameters that differ from their defaults are mirrored
+// into the query string, so the current shape can be shared by copying
+// the address.
+
+function applyUrlParams() {
+    const query = new URLSearchParams(location.search);
+    for (const group of GROUPS) {
+        for (const param of group.params) {
+            if (!query.has(param.scad)) {
+                continue;
+            }
+            const num = Number(query.get(param.scad));
+            if (!Number.isFinite(num)) {
+                continue;
+            }
+            if (param.min !== undefined) {
+                values[param.scad] =
+                    Math.min(param.max, Math.max(param.min, num));
+            } else if (param.type === "select") {
+                if (param.options.includes(num)) {
+                    values[param.scad] = num;
+                }
+            } else {
+                values[param.scad] = num ? 1 : 0;
+            }
+        }
+    }
+}
+
+function updateUrl() {
+    const defs = defaults();
+    const query = new URLSearchParams();
+    for (const [name, value] of Object.entries(values)) {
+        if (value !== defs[name]) {
+            query.set(name, value);
+        }
+    }
+    const qs = query.toString();
+    history.replaceState(null, "", qs ? `?${qs}` : location.pathname);
+}
+
+// ---------------------------------------------------------------------
 // Controls. Each parameter definition becomes a slider, checkbox, or
 // dropdown; changing any of them schedules a re-render.
 
@@ -37,7 +79,7 @@ function buildControl(param) {
         const input = document.createElement("input");
         input.type = "checkbox";
         input.id = param.scad;
-        input.checked = param.value === 1;
+        input.checked = values[param.scad] === 1;
         input.addEventListener("input", () => {
             values[param.scad] = input.checked ? 1 : 0;
             scheduleRender();
@@ -53,7 +95,7 @@ function buildControl(param) {
             const el = document.createElement("option");
             el.value = option;
             el.textContent = option;
-            el.selected = option === param.value;
+            el.selected = option === values[param.scad];
             select.append(el);
         }
         select.addEventListener("input", () => {
@@ -65,14 +107,14 @@ function buildControl(param) {
     }
 
     const output = document.createElement("output");
-    output.textContent = param.value;
+    output.textContent = values[param.scad];
     const input = document.createElement("input");
     input.type = "range";
     input.id = param.scad;
     input.min = param.min;
     input.max = param.max;
     input.step = param.step;
-    input.value = param.value;
+    input.value = values[param.scad];
     input.addEventListener("input", () => {
         values[param.scad] = Number(input.value);
         output.textContent = input.value;
@@ -99,6 +141,7 @@ let renderStart = 0;
 let lastStl = null;
 
 function scheduleRender() {
+    updateUrl();
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(startRender, 150);
 }
@@ -144,6 +187,11 @@ function startRender() {
     };
     worker.postMessage({ id: renderId, source: scadSource(values) });
 }
+
+document.getElementById("share").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(location.href);
+    statusEl.textContent = "link copied";
+});
 
 downloadEl.addEventListener("click", () => {
     if (!lastStl) {
@@ -205,7 +253,28 @@ function initViewer() {
         renderer.render(scene, camera);
     });
 
-    return { scene, mesh: null, material, loader: new STLLoader() };
+    return {
+        scene, camera, controls, mesh: null, material,
+        loader: new STLLoader(), fitted: false,
+    };
+}
+
+// Position the camera so the whole model fits the view, with a small
+// margin. Fitting uses the smaller of the vertical and horizontal fields
+// of view, so the model fits on narrow (mobile) screens too.
+function fitCamera(geometry) {
+    const { camera, controls } = viewer;
+    geometry.computeBoundingSphere();
+    const { center, radius } = geometry.boundingSphere;
+    const vFov = (camera.fov * Math.PI) / 180;
+    const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+    const dist = (1.15 * radius) / Math.sin(Math.min(vFov, hFov) / 2);
+    const direction = new THREE.Vector3(1, 0.5, 1).normalize();
+    camera.position.copy(center).addScaledVector(direction, dist);
+    camera.near = dist / 100;
+    camera.far = dist * 100;
+    camera.updateProjectionMatrix();
+    controls.target.copy(center);
 }
 
 function showStl(buffer) {
@@ -222,10 +291,28 @@ function showStl(buffer) {
         viewer.mesh = new THREE.Mesh(geometry, viewer.material);
         viewer.scene.add(viewer.mesh);
     }
+    // Fit once, on the first model of the page load; after that the
+    // camera stays where the user put it.
+    if (!viewer.fitted) {
+        viewer.fitted = true;
+        fitCamera(geometry);
+    }
 }
 
 // ---------------------------------------------------------------------
+// Mobile menu. On narrow screens the panel slides in from the left.
 
+const panel = document.getElementById("panel");
+document.getElementById("menu-toggle").addEventListener("click", () => {
+    panel.classList.toggle("open");
+});
+document.getElementById("canvas").addEventListener("pointerdown", () => {
+    panel.classList.remove("open");
+});
+
+// ---------------------------------------------------------------------
+
+applyUrlParams();
 buildControls();
 try {
     viewer = initViewer();

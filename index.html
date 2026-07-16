@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>twirly</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">
 {
@@ -15,6 +16,7 @@
 </script>
 </head>
 <body>
+<button id="menu-toggle" type="button" aria-label="toggle controls">&#9776;</button>
 <aside id="panel">
   <header>
     <h1>twirly</h1>
@@ -23,6 +25,7 @@
   <form id="controls"></form>
   <div class="actions">
     <button id="download" type="button" disabled>Download STL</button>
+    <button id="share" type="button">Copy link</button>
   </div>
   <p id="status">loading OpenSCAD&hellip;</p>
   <footer>

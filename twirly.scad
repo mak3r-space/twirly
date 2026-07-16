@@ -41,7 +41,7 @@ twist_part = 1.5; // [0:0.25:3]
 /* [Top rounding] */
 // How the top closes: 2 gives a full dome, 4 - 6 keep the body shape and
 // round off only the tip.
-roundness = 4; // [2:0.5:8]
+roundness = 4; // [0.5:0.5:8]
 // Tip sharpness: 1 = rounded, equal to roundness = straight cone tip,
 // higher = sharp spike.
 pointiness = 1; // [1:0.5:10]

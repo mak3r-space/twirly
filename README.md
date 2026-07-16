@@ -5,7 +5,10 @@ the shape parameters, [openscad-wasm](https://github.com/openscad/openscad-wasm)
 renders the model in a web worker, and [three.js](https://threejs.org/)
 displays the result. The generated STL can be downloaded for 3D printing.
 
-Live site: https://juliaogris.github.io/twirly/
+Live site: https://twirly.juliaogris.com/
+
+The shape parameters live in the URL query string, so a configured shape
+can be shared by copying the address.
 
 ## How it works
 
