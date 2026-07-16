@@ -44,6 +44,29 @@ body {
     font-size: 13px;
 }
 
+#presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+#presets a {
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+#presets a:hover {
+    border-color: var(--accent);
+}
+
+#presets a.reset {
+    color: var(--muted);
+}
+
 #controls {
     display: flex;
     flex-direction: column;

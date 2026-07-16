@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
-import { GROUPS, defaults, scadSource } from "./params.js";
+import { GROUPS, PRESETS, defaults, scadSource } from "./params.js";
 
 const statusEl = document.getElementById("status");
 const downloadEl = document.getElementById("download");
@@ -326,7 +326,25 @@ document.getElementById("canvas").addEventListener("pointerdown", () => {
 
 // ---------------------------------------------------------------------
 
+// Preset links navigate with a new query string, which reloads the page
+// with those parameters applied; "reset" clears back to the defaults.
+function buildPresets() {
+    const nav = document.getElementById("presets");
+    for (const preset of PRESETS) {
+        const link = document.createElement("a");
+        link.href = `?${preset.query}`;
+        link.textContent = preset.name;
+        nav.append(link);
+    }
+    const reset = document.createElement("a");
+    reset.href = location.pathname;
+    reset.textContent = "reset";
+    reset.className = "reset";
+    nav.append(reset);
+}
+
 applyUrlParams();
+buildPresets();
 buildControls();
 syncTopControls();
 try {

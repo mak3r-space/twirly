@@ -53,6 +53,16 @@ export const GROUPS = [
     },
 ];
 
+// Example shapes, each just a set of URL parameters. Rendered as links,
+// so they double as shareable examples.
+export const PRESETS = [
+    { name: "candy bowl", query: "pointiness=0&height=60" },
+    { name: "vase", query: "pointiness=0&is_vase=1&height=120" },
+    { name: "ice-cream twirl", query: "height=110&profile_depth=0.3&rib_count=7&rib_depth=0.1&twist=300&twist_part=0&roundness=2.5&pointiness=3" },
+    { name: "garlic bulb", query: "height=70&base_diameter=110&profile_depth=0.4&rib_count=6&rib_depth=0.15&twist=30&roundness=2&pointiness=5" },
+    { name: "bishop's hat", query: "height=140&profile_depth=0.5&rib_count=4&rib_depth=0.08&twist=45&roundness=1.5&pointiness=6" },
+];
+
 export function defaults() {
     const values = {};
     for (const group of GROUPS) {
