@@ -327,7 +327,7 @@ document.getElementById("canvas").addEventListener("pointerdown", () => {
 // ---------------------------------------------------------------------
 
 // Preset links navigate with a new query string, which reloads the page
-// with those parameters applied; "reset" clears back to the defaults.
+// with those parameters applied.
 function buildPresets() {
     const nav = document.getElementById("presets");
     for (const preset of PRESETS) {
@@ -336,11 +336,6 @@ function buildPresets() {
         link.textContent = preset.name;
         nav.append(link);
     }
-    const reset = document.createElement("a");
-    reset.href = location.pathname;
-    reset.textContent = "reset";
-    reset.className = "reset";
-    nav.append(reset);
 }
 
 applyUrlParams();
